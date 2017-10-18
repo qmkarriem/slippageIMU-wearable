@@ -1,33 +1,10 @@
 /*****************************************************************
-LSM9DS1_Basic_I2C.ino
-SFE_LSM9DS1 Library Simple Example Code - I2C Interface
-Jim Lindblom @ SparkFun Electronics
-Original Creation Date: April 30, 2015
+photonIMU.ino
+Quran Karriem, October 2017
 https://github.com/sparkfun/SparkFun_LSM9DS1_Particle_Library
 
-The LSM9DS1 is a versatile 9DOF sensor. It has a built-in
-accelerometer, gyroscope, and magnetometer. Very cool! Plus it
-functions over either SPI or I2C.
+Sends LSM9DS1 IMU data over UDP. Requires SFE_LSM9DS1 library by Jim Lindblom
 
-This Photon sketch is a demo of the simple side of the
-SFE_LSM9DS1 library. It'll demo the following:
-* How to create a LSM9DS1 object, using a constructor (global
-  variables section).
-* How to use the begin() function of the LSM9DS1 class.
-* How to read the gyroscope, accelerometer, and magnetometer
-  using the readGryo(), readAccel(), readMag() functions and
-  the gx, gy, gz, ax, ay, az, mx, my, and mz variables.
-* How to calculate actual acceleration, rotation speed,
-  magnetic field strength using the calcAccel(), calcGyro()
-  and calcMag() functions.
-* How to use the data from the LSM9DS1 to calculate
-  orientation and heading.
-
-Hardware setup: This library supports communicating with the
-LSM9DS1 over either I2C or SPI. This example demonstrates how
-to use I2C.
-
-If you have the Photon IMU shield, no extra wiring is required.
 If you're using a breakout, the pin-out is as follows:
 	LSM9DS1 --------- Photon
 	 SCL -------------- D1 (SCL)
@@ -37,57 +14,33 @@ If you're using a breakout, the pin-out is as follows:
 (CSG, CSXM, SDOG, and SDOXM should all be pulled high.
 Jumpers on the breakout board will do this for you.)
 
-Development environment specifics:
-	IDE: Particle Build
-	Hardware Platform: Particle Photon
-	                   SparkFun Photon IMU Shield
-
-This code is released under the MIT license.
-
-Distributed as-is; no warranty is given.
+D
 *****************************************************************/
 #include "SparkFunLSM9DS1.h"
 #include "math.h"
 
-//////////////////////////
-// LSM9DS1 Library Init //
-//////////////////////////
-// Use the LSM9DS1 class to create an object. [imu] can be
-// named anything, we'll refer to that throught the sketch.
+
 LSM9DS1 imu;
 
-///////////////////////
-// Example I2C Setup //
-///////////////////////
-// SDO_XM and SDO_G are both pulled high, so our addresses are:
 #define LSM9DS1_M	0x1E // Would be 0x1C if SDO_M is LOW
 #define LSM9DS1_AG	0x6B // Would be 0x6A if SDO_AG is LOW
 
-////////////////////////////
-// Sketch Output Settings //
-////////////////////////////
 #define PRINT_CALCULATED
 //#define PRINT_RAW
 #define PRINT_SPEED 250 // 250 ms between prints
-
-// Earth's magnetic field varies by location. Add or subtract
-// a declination to get a more accurate heading. Calculate
-// your's here:
-// http://www.ngdc.noaa.gov/geomag-web/#declination
+// Calculate magnetic field at your location: http://www.ngdc.noaa.gov/geomag-web/#declination
 #define DECLINATION -9.1 // Declination (degrees) in Durham, NC, October 2017.
-// UDP Port used for two way communication
 unsigned int localPort = 8888;
-
-// An UDP instance to let us send and receive packets over UDP
-UDP Udp;
+int remotePort = 8888;
+UDP udp;
+const size_t bufferSize = 16; // Make this bigger if you have more data!
+unsigned char buffer[bufferSize];
+IPAddress remoteIP(152,3,43,196);
 void setup()
 {
-
   Serial.begin(115200);
-  // start the UDP
-  Udp.begin(localPort);
-  // Print your device IP Address via serial
-  Serial.println(WiFi.localIP());
+  udp.begin(0);
+  Serial.println(WiFi.localIP()); // Print your device IP Address via serial
   // Before initializing the IMU, there are a few settings
   // we may need to adjust. Use the settings struct to set
   // the device's communication mode and addresses:
@@ -128,10 +81,26 @@ void loop()
 void printGyro()
 {
   imu.readGyro();
+  int value = imu.calcGyro(imu.gx);
+  buffer[0] = value >> 8;
+  buffer[1] = (value & 0xff);
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", value);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
   Serial.print("G: ");
 #ifdef PRINT_CALCULATED
   Serial.print(imu.calcGyro(imu.gx), 2);
-  //sendUDP("GX", imu.calcGyro(imu.gx));
   Serial.print(" ");
   Serial.print(imu.calcGyro(imu.gy), 2);
   Serial.print(" ");
@@ -220,23 +189,3 @@ float ax, float ay, float az, float mx, float my, float mz)
   Serial.print("Roll: "); Serial.println(roll, 2);
   Serial.print("Heading: "); Serial.println(heading, 2);
 }
-
-/*void sendUDP(String identifier, float value){
-
-  if (Udp.parsePacket() > 0) {
-    char udpBuffer[] = "                         ";
-    // Read from buffer
-    char c = Udp.read(udpBuffer, 35);
-
-    // Store sender ip and port
-    IPAddress ipAddress = Udp.remoteIP();
-    int port = Udp.remotePort();
-
-    // Echo back data to sender
-    Udp.beginPacket(ipAddress, 8888);
-    Udp.write(identifier, udpBuffer);
-    Udp.write(value, udpBuffer);
-    Serial.print(ipAddress); Serial.print(", "); Serial.print(port); Serial.print(", "); Serial.println(c);
-    Udp.endPacket();
-  }
-}*/
