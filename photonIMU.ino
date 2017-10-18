@@ -3,13 +3,13 @@ LSM9DS1_Basic_I2C.ino
 SFE_LSM9DS1 Library Simple Example Code - I2C Interface
 Jim Lindblom @ SparkFun Electronics
 Original Creation Date: April 30, 2015
-https://github.com/sparkfun/LSM9DS1_Breakout
+https://github.com/sparkfun/SparkFun_LSM9DS1_Particle_Library
 
 The LSM9DS1 is a versatile 9DOF sensor. It has a built-in
 accelerometer, gyroscope, and magnetometer. Very cool! Plus it
 functions over either SPI or I2C.
 
-This Arduino sketch is a demo of the simple side of the
+This Photon sketch is a demo of the simple side of the
 SFE_LSM9DS1 library. It'll demo the following:
 * How to create a LSM9DS1 object, using a constructor (global
   variables section).
@@ -25,36 +25,29 @@ SFE_LSM9DS1 library. It'll demo the following:
 
 Hardware setup: This library supports communicating with the
 LSM9DS1 over either I2C or SPI. This example demonstrates how
-to use I2C. The pin-out is as follows:
-	LSM9DS1 --------- Arduino
-	 SCL ---------- SCL (A5 on older 'Duinos')
-	 SDA ---------- SDA (A4 on older 'Duinos')
+to use I2C.
+
+If you have the Photon IMU shield, no extra wiring is required.
+If you're using a breakout, the pin-out is as follows:
+	LSM9DS1 --------- Photon
+	 SCL -------------- D1 (SCL)
+	 SDA -------------- D0 (SDA)
 	 VDD ------------- 3.3V
 	 GND ------------- GND
 (CSG, CSXM, SDOG, and SDOXM should all be pulled high.
 Jumpers on the breakout board will do this for you.)
 
-The LSM9DS1 has a maximum voltage of 3.6V. Make sure you power it
-off the 3.3V rail! I2C pins are open-drain, so you'll be
-(mostly) safe connecting the LSM9DS1's SCL and SDA pins
-directly to the Arduino.
-
 Development environment specifics:
-	IDE: Arduino 1.6.3
-	Hardware Platform: SparkFun Redboard
-	LSM9DS1 Breakout Version: 1.0
+	IDE: Particle Build
+	Hardware Platform: Particle Photon
+	                   SparkFun Photon IMU Shield
 
-This code is beerware. If you see me (or any other SparkFun
-employee) at the local, and you've found our code helpful,
-please buy us a round!
+This code is released under the MIT license.
 
 Distributed as-is; no warranty is given.
 *****************************************************************/
-// The SFE_LSM9DS1 library requires both Wire and SPI be
-// included BEFORE including the 9DS1 library.
-#include <Wire.h>
-#include <SPI.h>
-#include <SparkFunLSM9DS1.h>
+#include "SparkFunLSM9DS1.h"
+#include "math.h"
 
 //////////////////////////
 // LSM9DS1 Library Init //
@@ -76,13 +69,12 @@ LSM9DS1 imu;
 #define PRINT_CALCULATED
 //#define PRINT_RAW
 #define PRINT_SPEED 250 // 250 ms between prints
-static unsigned long lastPrint = 0; // Keep track of print time
 
 // Earth's magnetic field varies by location. Add or subtract
 // a declination to get a more accurate heading. Calculate
 // your's here:
 // http://www.ngdc.noaa.gov/geomag-web/#declination
-#define DECLINATION -9.1 // Declination (degrees) in Durham, NC in 2017.
+#define DECLINATION -9.1 // Declination (degrees) in Durham, NC.
 
 void setup()
 {
@@ -113,48 +105,27 @@ void setup()
 
 void loop()
 {
-  // Update the sensor values whenever new data is available
-  if ( imu.gyroAvailable() )
-  {
-    // To read from the gyroscope,  first call the
-    // readGyro() function. When it exits, it'll update the
-    // gx, gy, and gz variables with the most current data.
-    imu.readGyro();
-  }
-  if ( imu.accelAvailable() )
-  {
-    // To read from the accelerometer, first call the
-    // readAccel() function. When it exits, it'll update the
-    // ax, ay, and az variables with the most current data.
-    imu.readAccel();
-  }
-  if ( imu.magAvailable() )
-  {
-    // To read from the magnetometer, first call the
-    // readMag() function. When it exits, it'll update the
-    // mx, my, and mz variables with the most current data.
-    imu.readMag();
-  }
+  printGyro();  // Print "G: gx, gy, gz"
+  printAccel(); // Print "A: ax, ay, az"
+  printMag();   // Print "M: mx, my, mz"
 
-  if ((lastPrint + PRINT_SPEED) < millis())
-  {
-    printGyro();  // Print "G: gx, gy, gz"
-    printAccel(); // Print "A: ax, ay, az"
-    printMag();   // Print "M: mx, my, mz"
-    // Print the heading and orientation for fun!
-    // Call print attitude. The LSM9DS1's mag x and y
-    // axes are opposite to the accelerometer, so my, mx are
-    // substituted for each other.
-    printAttitude(imu.ax, imu.ay, imu.az,
-                 -imu.my, -imu.mx, imu.mz);
-    Serial.println();
+  // Print the heading and orientation for fun!
+  // Call print attitude. The LSM9DS1's magnetometer x and y
+  // axes are opposite to the accelerometer, so my and mx are
+  // substituted for each other.
+  printAttitude(imu.ax, imu.ay, imu.az, -imu.my, -imu.mx, imu.mz);
+  Serial.println();
 
-    lastPrint = millis(); // Update lastPrint time
-  }
+  delay(PRINT_SPEED);
 }
 
 void printGyro()
 {
+  // To read from the gyroscope, you must first call the
+  // readGyro() function. When this exits, it'll update the
+  // gx, gy, and gz variables with the most current data.
+  imu.readGyro();
+
   // Now we can use the gx, gy, and gz variables as we please.
   // Either print them as raw ADC values, or calculated in DPS.
   Serial.print("G: ");
@@ -179,6 +150,11 @@ void printGyro()
 
 void printAccel()
 {
+  // To read from the accelerometer, you must first call the
+  // readAccel() function. When this exits, it'll update the
+  // ax, ay, and az variables with the most current data.
+  imu.readAccel();
+
   // Now we can use the ax, ay, and az variables as we please.
   // Either print them as raw ADC values, or calculated in g's.
   Serial.print("A: ");
@@ -204,6 +180,11 @@ void printAccel()
 
 void printMag()
 {
+  // To read from the magnetometer, you must first call the
+  // readMag() function. When this exits, it'll update the
+  // mx, my, and mz variables with the most current data.
+  imu.readMag();
+
   // Now we can use the mx, my, and mz variables as we please.
   // Either print them as raw ADC values, or calculated in Gauss.
   Serial.print("M: ");
@@ -231,29 +212,30 @@ void printMag()
 // http://cache.freescale.com/files/sensors/doc/app_note/AN3461.pdf?fpsp=1
 // Heading calculations taken from this app note:
 // http://www51.honeywell.com/aero/common/documents/myaerospacecatalog-documents/Defense_Brochures-documents/Magnetic__Literature_Application_notes-documents/AN203_Compass_Heading_Using_Magnetometers.pdf
-void printAttitude(float ax, float ay, float az, float mx, float my, float mz)
+void printAttitude(
+float ax, float ay, float az, float mx, float my, float mz)
 {
   float roll = atan2(ay, az);
   float pitch = atan2(-ax, sqrt(ay * ay + az * az));
 
   float heading;
   if (my == 0)
-    heading = (mx < 0) ? PI : 0;
+    heading = (mx < 0) ? 180.0 : 0;
   else
     heading = atan2(mx, my);
 
-  heading -= DECLINATION * PI / 180;
+  heading -= DECLINATION * M_PI / 180;
 
-  if (heading > PI) heading -= (2 * PI);
-  else if (heading < -PI) heading += (2 * PI);
-  else if (heading < 0) heading += 2 * PI;
+  if (heading > M_PI) heading -= (2 * M_PI);
+  else if (heading < -M_PI) heading += (2 * M_PI);
+  else if (heading < 0) heading += 2 * M_PI;
 
   // Convert everything from radians to degrees:
-  heading *= 180.0 / PI;
-  pitch *= 180.0 / PI;
-  roll  *= 180.0 / PI;
+  heading *= 180.0 / M_PI;
+  pitch *= 180.0 / M_PI;
+  roll  *= 180.0 / M_PI;
 
-  Serial.print("Pitch: "); Serial.println(pitch, 2);
+  Serial.print("Pitch: "); Serial.print(pitch, 2);
   Serial.print("Roll: "); Serial.println(roll, 2);
   Serial.print("Heading: "); Serial.println(heading, 2);
 }
