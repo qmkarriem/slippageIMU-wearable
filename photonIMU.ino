@@ -74,13 +74,21 @@ LSM9DS1 imu;
 // a declination to get a more accurate heading. Calculate
 // your's here:
 // http://www.ngdc.noaa.gov/geomag-web/#declination
-#define DECLINATION -9.1 // Declination (degrees) in Durham, NC.
+#define DECLINATION -9.1 // Declination (degrees) in Durham, NC, October 2017.
+// UDP Port used for two way communication
+unsigned int localPort = 8888;
 
+// An UDP instance to let us send and receive packets over UDP
+UDP Udp;
+char[] udpBuffer;
 void setup()
 {
 
   Serial.begin(115200);
-
+  // start the UDP
+  Udp.begin(localPort);
+  // Print your device IP Address via serial
+  Serial.println(WiFi.localIP());
   // Before initializing the IMU, there are a few settings
   // we may need to adjust. Use the settings struct to set
   // the device's communication mode and addresses:
@@ -115,7 +123,6 @@ void loop()
   // substituted for each other.
   printAttitude(imu.ax, imu.ay, imu.az, -imu.my, -imu.mx, imu.mz);
   Serial.println();
-
   delay(PRINT_SPEED);
 }
 
@@ -134,6 +141,7 @@ void printGyro()
   // calcGyro helper function to convert a raw ADC value to
   // DPS. Give the function the value that you want to convert.
   Serial.print(imu.calcGyro(imu.gx), 2);
+  sendUDP("GX", imu.calcGyro(imu.gx));
   Serial.print(" ");
   Serial.print(imu.calcGyro(imu.gy), 2);
   Serial.print(" ");
@@ -235,39 +243,16 @@ float ax, float ay, float az, float mx, float my, float mz)
   pitch *= 180.0 / M_PI;
   roll  *= 180.0 / M_PI;
 
-  Serial.print("Pitch: "); Serial.print(pitch, 2);
+  Serial.print("Pitch: "); Serial.println(pitch, 2);
   Serial.print("Roll: "); Serial.println(roll, 2);
   Serial.print("Heading: "); Serial.println(heading, 2);
 }
 
-/*
-// EXAMPLE USAGE
-
-// UDP Port used for two way communication
-unsigned int localPort = 8888;
-
-// An UDP instance to let us send and receive packets over UDP
-UDP Udp;
-
-void setup() {
-  // start the UDP
-  Udp.begin(localPort);
-
-  // Print your device IP Address via serial
-  Serial.begin(9600);
-  Serial.println(WiFi.localIP());
-}
-
-void loop() {
-  // Check if data has been received
+void sendUDP(String identifier, float value){
   if (Udp.parsePacket() > 0) {
 
-    // Read first char of data received
-    char c = Udp.read();
-
-    // Ignore other chars
-    while(Udp.available())
-      Udp.read();
+    // Read from buffer
+    char c = Udp.read(udpBuffer, 35);
 
     // Store sender ip and port
     IPAddress ipAddress = Udp.remoteIP();
@@ -275,10 +260,9 @@ void loop() {
 
     // Echo back data to sender
     Udp.beginPacket(ipAddress, 8888);
-    Udp.write(c);
+    Udp.write(identifier, udpBuffer);
+    Udp.write(value, udpBuffer);
     Serial.print(ipAddress); Serial.print(", "); Serial.print(port); Serial.print(", "); Serial.println(c);
     Udp.endPacket();
   }
-
 }
-*/
