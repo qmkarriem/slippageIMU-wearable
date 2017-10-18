@@ -80,7 +80,6 @@ unsigned int localPort = 8888;
 
 // An UDP instance to let us send and receive packets over UDP
 UDP Udp;
-char[] udpBuffer;
 void setup()
 {
 
@@ -128,20 +127,11 @@ void loop()
 
 void printGyro()
 {
-  // To read from the gyroscope, you must first call the
-  // readGyro() function. When this exits, it'll update the
-  // gx, gy, and gz variables with the most current data.
   imu.readGyro();
-
-  // Now we can use the gx, gy, and gz variables as we please.
-  // Either print them as raw ADC values, or calculated in DPS.
   Serial.print("G: ");
 #ifdef PRINT_CALCULATED
-  // If you want to print calculated values, you can use the
-  // calcGyro helper function to convert a raw ADC value to
-  // DPS. Give the function the value that you want to convert.
   Serial.print(imu.calcGyro(imu.gx), 2);
-  sendUDP("GX", imu.calcGyro(imu.gx));
+  //sendUDP("GX", imu.calcGyro(imu.gx));
   Serial.print(" ");
   Serial.print(imu.calcGyro(imu.gy), 2);
   Serial.print(" ");
@@ -158,18 +148,9 @@ void printGyro()
 
 void printAccel()
 {
-  // To read from the accelerometer, you must first call the
-  // readAccel() function. When this exits, it'll update the
-  // ax, ay, and az variables with the most current data.
   imu.readAccel();
-
-  // Now we can use the ax, ay, and az variables as we please.
-  // Either print them as raw ADC values, or calculated in g's.
   Serial.print("A: ");
 #ifdef PRINT_CALCULATED
-  // If you want to print calculated values, you can use the
-  // calcAccel helper function to convert a raw ADC value to
-  // g's. Give the function the value that you want to convert.
   Serial.print(imu.calcAccel(imu.ax), 2);
   Serial.print(" ");
   Serial.print(imu.calcAccel(imu.ay), 2);
@@ -188,18 +169,10 @@ void printAccel()
 
 void printMag()
 {
-  // To read from the magnetometer, you must first call the
-  // readMag() function. When this exits, it'll update the
-  // mx, my, and mz variables with the most current data.
   imu.readMag();
 
-  // Now we can use the mx, my, and mz variables as we please.
-  // Either print them as raw ADC values, or calculated in Gauss.
   Serial.print("M: ");
 #ifdef PRINT_CALCULATED
-  // If you want to print calculated values, you can use the
-  // calcMag helper function to convert a raw ADC value to
-  // Gauss. Give the function the value that you want to convert.
   Serial.print(imu.calcMag(imu.mx), 2);
   Serial.print(" ");
   Serial.print(imu.calcMag(imu.my), 2);
@@ -248,9 +221,10 @@ float ax, float ay, float az, float mx, float my, float mz)
   Serial.print("Heading: "); Serial.println(heading, 2);
 }
 
-void sendUDP(String identifier, float value){
-  if (Udp.parsePacket() > 0) {
+/*void sendUDP(String identifier, float value){
 
+  if (Udp.parsePacket() > 0) {
+    char udpBuffer[] = "                         ";
     // Read from buffer
     char c = Udp.read(udpBuffer, 35);
 
@@ -265,4 +239,4 @@ void sendUDP(String identifier, float value){
     Serial.print(ipAddress); Serial.print(", "); Serial.print(port); Serial.print(", "); Serial.println(c);
     Udp.endPacket();
   }
-}
+}*/
