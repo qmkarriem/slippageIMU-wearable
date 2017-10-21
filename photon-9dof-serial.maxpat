@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 175.0, 79.0, 1085.0, 756.0 ],
+		"rect" : [ 34.0, 79.0, 988.0, 756.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -37,6 +37,32 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "newobj",
+					"numinlets" : 3,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 420.0, 283.0, 40.0, 22.0 ],
+					"style" : "",
+					"text" : "itoa"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-11",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "list", "int" ],
+					"patching_rect" : [ 260.0, 246.0, 177.0, 22.0 ],
+					"style" : "",
+					"text" : "sadam.udpReceiver 8888 1024"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-94",
 					"maxclass" : "newobj",
@@ -494,7 +520,7 @@
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 760.666687, 640.666687, 74.0, 22.0 ],
 					"style" : "",
-					"text" : "tapout~ 100"
+					"text" : "tapout~ 180"
 				}
 
 			}
@@ -673,9 +699,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 690.666687, 375.666656, 42.0, 22.0 ],
+					"patching_rect" : [ 690.666687, 375.666656, 35.0, 22.0 ],
 					"style" : "",
-					"text" : "* 300."
+					"text" : "* 20."
 				}
 
 			}
@@ -725,9 +751,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 606.666687, 246.666672, 49.0, 22.0 ],
+					"patching_rect" : [ 606.666687, 246.666672, 35.0, 22.0 ],
 					"style" : "",
-					"text" : "* 2000."
+					"text" : "* 60."
 				}
 
 			}
@@ -816,7 +842,7 @@
 					"outlettype" : [ "float" ],
 					"patching_rect" : [ 792.666687, 288.666656, 35.0, 22.0 ],
 					"style" : "",
-					"text" : "* 50."
+					"text" : "* 20."
 				}
 
 			}
@@ -1212,6 +1238,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-23", 0 ],
 					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-11", 0 ]
 				}
 
 			}
@@ -1810,6 +1843,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-17", 0 ],
+					"source" : [ "obj-9", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-80", 0 ],
 					"source" : [ "obj-90", 0 ]
 				}
@@ -1837,7 +1877,11 @@
 
 			}
  ],
-		"dependency_cache" : [  ],
+		"dependency_cache" : [ 			{
+				"name" : "sadam.udpReceiver.mxo",
+				"type" : "iLaX"
+			}
+ ],
 		"autosave" : 0,
 		"styles" : [ 			{
 				"name" : "newobjBlue-1",
@@ -1860,8 +1904,8 @@
 , 			{
 				"name" : "newobjYellow-1",
 				"default" : 				{
-					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ],
-					"fontsize" : [ 12.059008 ]
+					"fontsize" : [ 12.059008 ],
+					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ]
 				}
 ,
 				"parentstyle" : "",

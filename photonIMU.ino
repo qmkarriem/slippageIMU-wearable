@@ -33,14 +33,16 @@ LSM9DS1 imu;
 unsigned int localPort = 8888;
 int remotePort = 8888;
 UDP udp;
-const size_t bufferSize = 16; // Make this bigger if you have more data!
-unsigned char buffer[bufferSize];
-IPAddress remoteIP(152,3,43,196);
+const size_t bufferSize = 32; // Make this bigger if you have more data!
+char buffer[bufferSize];
+
+
+IPAddress remoteIP(10,188,255,99);
 void setup()
 {
   Serial.begin(115200);
   udp.begin(0);
-  Serial.println(WiFi.localIP()); // Print your device IP Address via serial
+
   // Before initializing the IMU, there are a few settings
   // we may need to adjust. Use the settings struct to set
   // the device's communication mode and addresses:
@@ -74,6 +76,7 @@ void loop()
   // axes are opposite to the accelerometer, so my and mx are
   // substituted for each other.
   printAttitude(imu.ax, imu.ay, imu.az, -imu.my, -imu.mx, imu.mz);
+  Serial.print("IP: ");Serial.println(WiFi.localIP()); // Print your device IP Address via serial
   Serial.println();
   delay(PRINT_SPEED);
 }
@@ -81,13 +84,12 @@ void loop()
 void printGyro()
 {
   imu.readGyro();
-  int value = imu.calcGyro(imu.gx);
-  buffer[0] = value >> 8;
-  buffer[1] = (value & 0xff);
+  int ret = snprintf(buffer, bufferSize, "G: %f %f %f", imu.calcGyro(imu.gx), imu.calcGyro(imu.gy), imu.calcGyro(imu.gz));
+
   if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
     // Success
     #ifdef SERIAL_DEBUG
-      Serial.printlnf("%d", value);
+      Serial.printlnf("%d", buffer);
     #endif
   }
   else {
@@ -118,6 +120,22 @@ void printGyro()
 void printAccel()
 {
   imu.readAccel();
+  int ret = snprintf(buffer, bufferSize, "A: %f %f %f", imu.calcAccel(imu.ax), imu.calcAccel(imu.ay), imu.calcAccel(imu.az));
+
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", buffer);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
   Serial.print("A: ");
 #ifdef PRINT_CALCULATED
   Serial.print(imu.calcAccel(imu.ax), 2);
@@ -139,7 +157,22 @@ void printAccel()
 void printMag()
 {
   imu.readMag();
+  int ret = snprintf(buffer, bufferSize, "M: %f %f %f", imu.calcMag(imu.mx), imu.calcMag(imu.my), imu.calcMag(imu.mz));
 
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", buffer);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
   Serial.print("M: ");
 #ifdef PRINT_CALCULATED
   Serial.print(imu.calcMag(imu.mx), 2);
@@ -184,7 +217,54 @@ float ax, float ay, float az, float mx, float my, float mz)
   heading *= 180.0 / M_PI;
   pitch *= 180.0 / M_PI;
   roll  *= 180.0 / M_PI;
+  int ret = snprintf(buffer, bufferSize, "Pitch: %f", pitch);
 
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", buffer);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
+  ret = snprintf(buffer, bufferSize, "Roll: %f", roll);
+
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", buffer);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
+  ret = snprintf(buffer, bufferSize, "Heading: %f", heading);
+
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", buffer);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
   Serial.print("Pitch: "); Serial.println(pitch, 2);
   Serial.print("Roll: "); Serial.println(roll, 2);
   Serial.print("Heading: "); Serial.println(heading, 2);
