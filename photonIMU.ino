@@ -37,10 +37,18 @@ const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 
 
-IPAddress remoteIP(10,188,255,99);
+IPAddress remoteIP(10,188,252,81);
 void setup()
 {
   Serial.begin(115200);
+  IPAddress myAddress(10,191,3,179); //Fixed IP for Photon
+  IPAddress netmask(255,255,252,0);
+  IPAddress gateway(10,191,0,1);
+  IPAddress dns(152,3,70,100);
+  WiFi.setStaticIP(myAddress, netmask, gateway, dns);
+
+  // now let's use the configured IP
+  WiFi.useStaticIP();
   udp.begin(0);
 
   // Before initializing the IMU, there are a few settings
@@ -67,6 +75,25 @@ void setup()
 
 void loop()
 {
+  // Check if data has been received
+  if (udp.parsePacket() > 0) {  // Trying to pingback from Max to set remoteIP
+
+    // Read first char of data received
+    char c = udp.read();
+
+    // Ignore other chars
+    while(udp.available())
+    udp.read();
+
+    // Store sender ip and port
+    IPAddress ipAddress = udp.remoteIP();
+    int port = udp.remotePort();
+
+    // Echo back data to sender
+    udp.beginPacket(ipAddress, port);
+    udp.write(c);
+    udp.endPacket();
+}
   printGyro();  // Print "G: gx, gy, gz"
   printAccel(); // Print "A: ax, ay, az"
   printMag();   // Print "M: mx, my, mz"
