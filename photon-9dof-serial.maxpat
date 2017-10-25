@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 353.0, 149.0, 737.0, 568.0 ],
+		"rect" : [ 358.0, 395.0, 661.0, 568.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -38,6 +38,32 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-98",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 515.0, 33.0, 127.0, 22.0 ],
+					"style" : "",
+					"text" : "address 192.168.0.18"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-97",
+					"maxclass" : "number",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 465.0, 58.0, 50.0, 22.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-96",
 					"maxclass" : "number",
 					"numinlets" : 1,
@@ -51,19 +77,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-95",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 384.0, 68.0, 53.0, 22.0 ],
-					"style" : "",
-					"text" : "connect"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-61",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -71,7 +84,7 @@
 					"outlettype" : [ "int" ],
 					"patching_rect" : [ 384.0, 100.0, 212.0, 22.0 ],
 					"style" : "",
-					"text" : "sadam.udpSender 10.191.3.179 8888"
+					"text" : "sadam.udpSender 192.168.0.18 8888"
 				}
 
 			}
@@ -2029,7 +2042,14 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-61", 0 ],
-					"source" : [ "obj-95", 0 ]
+					"source" : [ "obj-97", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-61", 0 ],
+					"source" : [ "obj-98", 0 ]
 				}
 
 			}

@@ -19,7 +19,6 @@ D
 #include "SparkFunLSM9DS1.h"
 #include "math.h"
 
-
 LSM9DS1 imu;
 
 #define LSM9DS1_M	0x1E // Would be 0x1C if SDO_M is LOW
@@ -36,19 +35,10 @@ UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 
-
-IPAddress remoteIP(10,188,252,81);
+IPAddress remoteIP(192,168,0,10);
 void setup()
 {
   Serial.begin(115200);
-  IPAddress myAddress(10,191,3,179); //Fixed IP for Photon
-  IPAddress netmask(255,255,252,0);
-  IPAddress gateway(10,191,0,1);
-  IPAddress dns(152,3,70,100);
-  WiFi.setStaticIP(myAddress, netmask, gateway, dns);
-
-  // now let's use the configured IP
-  WiFi.useStaticIP();
   udp.begin(0);
 
   // Before initializing the IMU, there are a few settings
@@ -71,6 +61,7 @@ void setup()
     while (1)
       ;
   }
+  Particle.publish("slippage1-IP", String(WiFi.localIP())); //Publish IP via particle console
 }
 
 void loop()
@@ -93,7 +84,7 @@ void loop()
     udp.beginPacket(ipAddress, port);
     udp.write(c);
     udp.endPacket();
-}
+  }
   printGyro();  // Print "G: gx, gy, gz"
   printAccel(); // Print "A: ax, ay, az"
   printMag();   // Print "M: mx, my, mz"
@@ -103,7 +94,7 @@ void loop()
   // axes are opposite to the accelerometer, so my and mx are
   // substituted for each other.
   printAttitude(imu.ax, imu.ay, imu.az, -imu.my, -imu.mx, imu.mz);
-  Serial.print("IP: ");Serial.println(WiFi.localIP()); // Print your device IP Address via serial
+  Serial.print("IP: ");Serial.println(WiFi.localIP());
   Serial.println();
   delay(PRINT_SPEED);
 }
