@@ -35,7 +35,7 @@ UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 
-IPAddress remoteIP(192,168,0,10);
+IPAddress remoteIP(10,188,252,167);
 void setup()
 {
   Serial.begin(115200);
