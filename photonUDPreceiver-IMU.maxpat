@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 194.0, 79.0, 551.0, 489.0 ],
+		"rect" : [ 73.0, 500.0, 751.0, 492.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,13 +39,39 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"format" : 6,
+					"id" : "obj-33",
+					"maxclass" : "flonum",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 345.0, 188.0, 50.0, 22.0 ],
+					"style" : ""
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-29",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 345.0, 225.0, 63.0, 22.0 ],
+					"style" : "",
+					"text" : "s heading"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"format" : 6,
 					"id" : "obj-32",
 					"maxclass" : "flonum",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 319.0, 169.0, 50.0, 22.0 ],
+					"patching_rect" : [ 456.93335, 166.0, 50.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -59,7 +85,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 437.0, 169.0, 50.0, 22.0 ],
+					"patching_rect" : [ 574.93335, 166.0, 50.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -70,7 +96,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 437.0, 200.0, 36.0, 22.0 ],
+					"patching_rect" : [ 574.93335, 197.0, 36.0, 22.0 ],
 					"style" : "",
 					"text" : "s roll"
 				}
@@ -82,7 +108,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 319.0, 199.0, 45.0, 22.0 ],
+					"patching_rect" : [ 456.93335, 196.0, 45.0, 22.0 ],
 					"style" : "",
 					"text" : "s pitch"
 				}
@@ -375,7 +401,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 475.0, 200.0, 53.0, 22.0 ],
+					"patching_rect" : [ 612.93335, 197.0, 53.0, 22.0 ],
 					"style" : "",
 					"text" : "print roll"
 				}
@@ -387,7 +413,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 366.0, 199.0, 63.0, 22.0 ],
+					"patching_rect" : [ 503.93335, 196.0, 63.0, 22.0 ],
 					"style" : "",
 					"text" : "print pitch"
 				}
@@ -399,7 +425,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 229.0, 169.0, 80.0, 22.0 ],
+					"patching_rect" : [ 412.0, 225.0, 80.0, 22.0 ],
 					"style" : "",
 					"text" : "print heading"
 				}
@@ -436,7 +462,7 @@
 					"numinlets" : 7,
 					"numoutlets" : 7,
 					"outlettype" : [ "", "", "", "", "", "", "" ],
-					"patching_rect" : [ 10.0, 133.0, 531.400024, 22.0 ],
+					"patching_rect" : [ 10.0, 133.0, 689.400024, 22.0 ],
 					"style" : "",
 					"text" : "route G: A: M: Heading: Pitch: Roll:"
 				}
@@ -621,6 +647,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-29", 0 ],
+					"order" : 1,
+					"source" : [ "obj-33", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-91", 0 ],
+					"order" : 0,
+					"source" : [ "obj-33", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-5", 0 ],
 					"source" : [ "obj-4", 2 ]
 				}
@@ -709,6 +751,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-33", 0 ],
+					"source" : [ "obj-73", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"order" : 2,
 					"source" : [ "obj-73", 1 ]
@@ -728,13 +777,6 @@
 					"destination" : [ "obj-88", 0 ],
 					"order" : 0,
 					"source" : [ "obj-73", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-91", 0 ],
-					"source" : [ "obj-73", 3 ]
 				}
 
 			}
@@ -802,8 +844,8 @@
 , 			{
 				"name" : "newobjYellow-1",
 				"default" : 				{
-					"fontsize" : [ 12.059008 ],
-					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ]
+					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ],
+					"fontsize" : [ 12.059008 ]
 				}
 ,
 				"parentstyle" : "",

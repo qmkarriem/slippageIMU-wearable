@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 671.0, 172.0, 735.0, 681.0 ],
+		"rect" : [ 62.0, 159.0, 735.0, 681.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -263,7 +263,7 @@
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 246.666687, 525.666687, 74.0, 22.0 ],
 					"style" : "",
-					"text" : "tapout~ 180"
+					"text" : "tapout~ 100"
 				}
 
 			}
@@ -364,9 +364,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 281.666687, 209.666656, 34.0, 22.0 ],
+					"patching_rect" : [ 281.666687, 209.666656, 29.5, 22.0 ],
 					"style" : "",
-					"text" : "250."
+					"text" : "25."
 				}
 
 			}
@@ -390,9 +390,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 54.166687, 223.666656, 34.0, 22.0 ],
+					"patching_rect" : [ 54.166687, 223.666656, 29.5, 22.0 ],
 					"style" : "",
-					"text" : "250."
+					"text" : "25."
 				}
 
 			}
@@ -416,9 +416,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 258.666687, 274.666656, 34.0, 22.0 ],
+					"patching_rect" : [ 258.666687, 274.666656, 29.5, 22.0 ],
 					"style" : "",
-					"text" : "250."
+					"text" : "25."
 				}
 
 			}
@@ -1110,8 +1110,8 @@
 , 			{
 				"name" : "newobjYellow-1",
 				"default" : 				{
-					"fontsize" : [ 12.059008 ],
-					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ]
+					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ],
+					"fontsize" : [ 12.059008 ]
 				}
 ,
 				"parentstyle" : "",
