@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 460.0, 85.0, 678.0, 677.0 ],
+		"rect" : [ 776.0, 304.0, 678.0, 677.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -315,9 +315,9 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 105.0, 23.0, 34.0, 22.0 ],
+					"patching_rect" : [ 105.0, 23.0, 41.0, 22.0 ],
 					"style" : "",
-					"text" : "r roll"
+					"text" : "r roll2"
 				}
 
 			}
@@ -342,9 +342,9 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 61.0, 176.0, 43.0, 22.0 ],
+					"patching_rect" : [ 61.0, 176.0, 50.0, 22.0 ],
 					"style" : "",
-					"text" : "r pitch"
+					"text" : "r pitch2"
 				}
 
 			}
@@ -434,7 +434,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "float" ],
-					"patching_rect" : [ 400.0, 71.0, 43.0, 22.0 ],
+					"patching_rect" : [ 573.0, 111.0, 43.0, 22.0 ],
 					"style" : "",
 					"text" : "abs 0."
 				}
@@ -488,7 +488,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 400.0, 38.0, 50.0, 22.0 ],
+					"patching_rect" : [ 573.0, 78.0, 50.0, 22.0 ],
 					"style" : ""
 				}
 
@@ -570,9 +570,9 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 400.0, 9.0, 52.0, 22.0 ],
+					"patching_rect" : [ 573.0, 49.0, 59.0, 22.0 ],
 					"style" : "",
-					"text" : "r accelz"
+					"text" : "r accelz2"
 				}
 
 			}
@@ -583,9 +583,9 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 506.0, 49.0, 52.0, 22.0 ],
+					"patching_rect" : [ 506.0, 49.0, 59.0, 22.0 ],
 					"style" : "",
-					"text" : "r accely"
+					"text" : "r accely2"
 				}
 
 			}
@@ -596,9 +596,9 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 440.0, 49.0, 52.0, 22.0 ],
+					"patching_rect" : [ 440.0, 49.0, 59.0, 22.0 ],
 					"style" : "",
-					"text" : "r accelx"
+					"text" : "r accelx2"
 				}
 
 			}
