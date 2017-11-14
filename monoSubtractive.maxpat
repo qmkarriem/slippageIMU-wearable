@@ -83,9 +83,9 @@
 					"numinlets" : 6,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 566.0, 334.0, 112.0, 35.0 ],
+					"patching_rect" : [ 566.0, 334.0, 119.0, 35.0 ],
 					"style" : "",
-					"text" : "scale 200. 360. 10 500"
+					"text" : "scale 200. 360. 130 170"
 				}
 
 			}
@@ -111,7 +111,7 @@
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 458.0, 439.0, 74.0, 22.0 ],
 					"style" : "",
-					"text" : "tapout~ 250"
+					"text" : "tapout~ 150"
 				}
 
 			}
@@ -221,7 +221,7 @@
 					"outlettype" : [ "list", "float", "float", "float", "float", "list", "int" ],
 					"parameter_enable" : 0,
 					"patching_rect" : [ 143.0, 241.0, 256.0, 128.0 ],
-					"setfilter" : [ 0, 1, 1, 0, 0, 13571.807617, 0.84398, 1.050893, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+					"setfilter" : [ 0, 1, 1, 0, 0, 8032.694824, 0.84398, 1.050893, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
 					"style" : ""
 				}
 
@@ -410,6 +410,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-65", 0 ],
+					"source" : [ "obj-22", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"source" : [ "obj-25", 0 ]
 				}
@@ -521,8 +528,8 @@
 , 			{
 				"name" : "newobjYellow-1",
 				"default" : 				{
-					"fontsize" : [ 12.059008 ],
-					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ]
+					"accentcolor" : [ 0.82517, 0.78181, 0.059545, 1.0 ],
+					"fontsize" : [ 12.059008 ]
 				}
 ,
 				"parentstyle" : "",
