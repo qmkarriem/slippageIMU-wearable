@@ -35,12 +35,18 @@ UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 
-IPAddress remoteIP(10,188,255,72);
+IPAddress remoteIP(10,188,253,53);
+void updateRemotePort(const char *event, const char *data) {
+  remotePort = atoi(data);
+  Particle.publish("remotePortCallback", remotePort);
+}
+
 void setup()
 {
+  //Particle.subscribe("getRemoteIP", updateRemoteIP);
+  Particle.subscribe("getRemotePort-SLIPPAGE", updateRemotePort);
   Serial.begin(115200);
   udp.begin(0);
-
   // Before initializing the IMU, there are a few settings
   // we may need to adjust. Use the settings struct to set
   // the device's communication mode and addresses:
