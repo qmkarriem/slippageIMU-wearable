@@ -8,6 +8,7 @@ https://github.com/sparkfun/SparkFun_LSM9DS1_Particle_Library
 
 *****************************************************************/
 #include "SparkFunLSM9DS1.h"
+#include "SparkFunMAX17043.h"
 #include "math.h"
 
 LSM9DS1 imu;
@@ -27,6 +28,12 @@ const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 char IPString[40];
 IPAddress remoteIP(10,188,249,122);
+
+//Battery Voltage
+double voltage = 0; // Variable to keep track of LiPo voltage
+double soc = 0; // Variable to keep track of LiPo state-of-charge (SOC)
+bool alert; // Variable to keep track of whether alert has been triggered
+
 
 // receive a new port from Particle cloud Terminal
 void updateRemotePort(const char *event, const char *data) {
@@ -59,6 +66,9 @@ void setup()
   Particle.subscribe("getRemotePort-SLIPPAGE", updateRemotePort);
   Serial.begin(115200);
   udp.begin(0);
+  lipo.begin();
+  lipo.quickStart();
+  lipo.setThreshold(20);
   // Before initializing the IMU, there are a few settings
   // we may need to adjust. Use the settings struct to set
   // the device's communication mode and addresses:
@@ -224,6 +234,31 @@ void printMag()
   Serial.print(", ");
   Serial.println(imu.mz);
 #endif
+}
+
+void printVoltage()
+{
+  // lipo.getVoltage() returns a voltage value (e.g. 3.93)
+	voltage = lipo.getVoltage();
+	// lipo.getSOC() returns the estimated state of charge (e.g. 79%)
+	soc = lipo.getSOC();
+	// lipo.getAlert() returns a 0 or 1 (0=alert not triggered)
+	alert = lipo.getAlert();
+  int ret = snprintf(buffer, bufferSize, "battery: %f %f %f", voltage, soc, alert);
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", buffer);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
 }
 
 // Calculate pitch, roll, and heading.
