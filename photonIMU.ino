@@ -27,7 +27,7 @@ UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 char IPString[40];
-IPAddress remoteIP(10,188,253,72);
+IPAddress remoteIP(10,196,20,161);
 
 //Battery Voltage
 double voltage = 0; // Variable to keep track of LiPo voltage

@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 268.0, 163.0, 1003.0, 677.0 ],
+		"rect" : [ 465.0, 79.0, 886.0, 677.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -38,7 +38,20 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
-					"comment" : "",
+					"id" : "obj-4",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 73.0, 131.0, 48.0, 22.0 ],
+					"style" : "",
+					"text" : "port $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"comment" : "battery % (float)",
 					"id" : "obj-50",
 					"index" : 0,
 					"maxclass" : "outlet",
@@ -51,7 +64,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "roll (float)",
 					"id" : "obj-51",
 					"index" : 0,
 					"maxclass" : "outlet",
@@ -64,7 +77,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "pitch (float)",
 					"id" : "obj-52",
 					"index" : 0,
 					"maxclass" : "outlet",
@@ -77,7 +90,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "heading (float)",
 					"id" : "obj-48",
 					"index" : 0,
 					"maxclass" : "outlet",
@@ -90,7 +103,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "magnet x, y, z (list)",
 					"id" : "obj-49",
 					"index" : 0,
 					"maxclass" : "outlet",
@@ -103,7 +116,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "accel x, y, z (list)",
 					"id" : "obj-47",
 					"index" : 0,
 					"maxclass" : "outlet",
@@ -116,7 +129,7 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "gyro x, y, z (list)",
 					"id" : "obj-46",
 					"index" : 0,
 					"maxclass" : "outlet",
@@ -196,7 +209,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 73.0, 375.0, 68.0, 33.0 ],
+					"patching_rect" : [ 73.0, 375.0, 69.0, 33.0 ],
 					"style" : "",
 					"text" : "gyro x, y, z (list)"
 				}
@@ -208,7 +221,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 109.0, 134.0, 150.0, 20.0 ],
+					"patching_rect" : [ 109.0, 97.0, 150.0, 20.0 ],
 					"style" : "",
 					"text" : "port number"
 				}
@@ -216,14 +229,14 @@
 			}
 , 			{
 				"box" : 				{
-					"comment" : "",
+					"comment" : "set port",
 					"id" : "obj-36",
 					"index" : 0,
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 73.0, 124.0, 30.0, 30.0 ],
+					"patching_rect" : [ 73.0, 87.0, 30.0, 30.0 ],
 					"style" : ""
 				}
 
@@ -262,7 +275,7 @@
 					"outlettype" : [ "list", "int" ],
 					"patching_rect" : [ 73.0, 168.666656, 177.0, 22.0 ],
 					"style" : "",
-					"text" : "sadam.udpReceiver 8889 1024"
+					"text" : "sadam.udpReceiver 8888 1024"
 				}
 
 			}
@@ -309,8 +322,15 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-11", 0 ],
+					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-36", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"source" : [ "obj-4", 0 ]
 				}
 
 			}
