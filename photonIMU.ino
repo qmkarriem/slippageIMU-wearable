@@ -29,8 +29,8 @@ LSM9DS1 imu;
 #define PRINT_SPEED 50 // 50 ms between prints (experienced occasional dropouts at 25 ms)
 // Calculate magnetic field at your location: http://www.ngdc.noaa.gov/geomag-web/#declination
 #define DECLINATION -9.1 // Declination (degrees) in Durham, NC, October 2017.
-unsigned int localPort = 8889;
-int remotePort = 8889;
+unsigned int localPort = 8888;
+int remotePort = 8888;
 UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
