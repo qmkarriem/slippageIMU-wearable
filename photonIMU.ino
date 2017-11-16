@@ -1,22 +1,14 @@
 /*****************************************************************
 photonIMU.ino
 Quran Karriem, October 2017
-https://github.com/sparkfun/SparkFun_LSM9DS1_Particle_Library
+
 
 Sends LSM9DS1 IMU data over UDP. Requires SFE_LSM9DS1 library by Jim Lindblom
+https://github.com/sparkfun/SparkFun_LSM9DS1_Particle_Library
 
-If you're using a breakout, the pin-out is as follows:
-	LSM9DS1 --------- Photon
-	 SCL -------------- D1 (SCL)
-	 SDA -------------- D0 (SDA)
-	 VDD ------------- 3.3V
-	 GND ------------- GND
-(CSG, CSXM, SDOG, and SDOXM should all be pulled high.
-Jumpers on the breakout board will do this for you.)
-
-D
 *****************************************************************/
 #include "SparkFunLSM9DS1.h"
+#include "SparkFunMAX17043.h"
 #include "math.h"
 
 LSM9DS1 imu;
@@ -27,26 +19,56 @@ LSM9DS1 imu;
 #define PRINT_CALCULATED
 //#define PRINT_RAW
 #define PRINT_SPEED 50 // 50 ms between prints (experienced occasional dropouts at 25 ms)
-// Calculate magnetic field at your location: http://www.ngdc.noaa.gov/geomag-web/#declination
-#define DECLINATION -9.1 // Declination (degrees) in Durham, NC, October 2017.
+#define DECLINATION -9.1 // Declination (degrees) in Durham, NC, October 2017. Calculated via http://www.ngdc.noaa.gov/geomag-web/#declination
+
 unsigned int localPort = 8888;
 int remotePort = 8888;
 UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
+char IPString[40];
+IPAddress remoteIP(10,188,253,72);
 
-IPAddress remoteIP(10,188,253,53);
+//Battery Voltage
+double voltage = 0; // Variable to keep track of LiPo voltage
+double soc = 0; // Variable to keep track of LiPo state-of-charge (SOC)
+bool alert; // Variable to keep track of whether alert has been triggered
+
+
+// receive a new port from Particle cloud Terminal
 void updateRemotePort(const char *event, const char *data) {
   remotePort = atoi(data);
   Particle.publish("remotePortCallback", remotePort);
 }
 
+//receive a new IP address from Particle cloud Terminal
+void updateRemoteIP(const char *event, const char *data) {
+  unsigned char IPHandler[4] = {0}; //need to parse into . separated values
+  size_t index = 0;
+  while (*data){
+    if (isdigit((unsigned char)*data)){
+      IPHandler[index] *= 10;
+      IPHandler[index] += *data - '0';
+    } else {
+      index++;
+    }
+    data++;
+  }
+  sprintf(IPString, "%i, %i, %i, %i", IPHandler[0], IPHandler[1], IPHandler[2], IPHandler[3]);
+  remoteIP = IPHandler;
+  Particle.publish("remoteIPCallback", IPString);
+  Particle.publish("remoteIPCallback", String(remoteIP));
+}
+
 void setup()
 {
-  //Particle.subscribe("getRemoteIP", updateRemoteIP);
+  Particle.subscribe("getRemoteIP-SLIPPAGE", updateRemoteIP);
   Particle.subscribe("getRemotePort-SLIPPAGE", updateRemotePort);
   Serial.begin(115200);
   udp.begin(0);
+  lipo.begin();
+  lipo.quickStart();
+  lipo.setThreshold(20);
   // Before initializing the IMU, there are a few settings
   // we may need to adjust. Use the settings struct to set
   // the device's communication mode and addresses:
@@ -94,7 +116,7 @@ void loop()
   printGyro();  // Print "G: gx, gy, gz"
   printAccel(); // Print "A: ax, ay, az"
   printMag();   // Print "M: mx, my, mz"
-
+  printVoltage(); // Print "battery:"
   // Print the heading and orientation for fun!
   // Call print attitude. The LSM9DS1's magnetometer x and y
   // axes are opposite to the accelerometer, so my and mx are
@@ -212,6 +234,31 @@ void printMag()
   Serial.print(", ");
   Serial.println(imu.mz);
 #endif
+}
+
+void printVoltage()
+{
+  // lipo.getVoltage() returns a voltage value (e.g. 3.93)
+	voltage = lipo.getVoltage();
+	// lipo.getSOC() returns the estimated state of charge (e.g. 79%)
+	soc = lipo.getSOC();
+	// lipo.getAlert() returns a 0 or 1 (0=alert not triggered)
+	alert = lipo.getAlert();
+  int ret = snprintf(buffer, bufferSize, "battery: %f percent", soc);
+  if (udp.sendPacket(buffer, bufferSize, remoteIP, remotePort) >= 0) {
+    // Success
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("%d", buffer);
+    #endif
+  }
+  else {
+    #ifdef SERIAL_DEBUG
+      Serial.printlnf("send failed");
+    #endif
+            // On error, wait a moment, then reinitialize UDP and try again.
+    delay(1000);
+    udp.begin(0);
+  }
 }
 
 // Calculate pitch, roll, and heading.
