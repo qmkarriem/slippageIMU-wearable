@@ -24,15 +24,16 @@ LSM9DS1 imu;
 unsigned int localPort = 8888;
 int remotePort = 8888;
 UDP udp;
-const size_t bufferSize = 32; // Make this bigger if you have more data!
+const size_t bufferSize = 128; // Make this bigger if you have more data!
 char buffer[bufferSize];
 char IPString[40];
-IPAddress remoteIP(10,196,20,161);
+IPAddress remoteIP(192,168,0,7);
 
-//Battery Voltage
+/*//Battery Voltage
 double voltage = 0; // Variable to keep track of LiPo voltage
 double soc = 0; // Variable to keep track of LiPo state-of-charge (SOC)
 bool alert; // Variable to keep track of whether alert has been triggered
+*/
 
 
 // receive a new port from Particle cloud Terminal
@@ -62,13 +63,13 @@ void updateRemoteIP(const char *event, const char *data) {
 
 void setup()
 {
-  Particle.subscribe("getRemoteIP-SLIPPAGE", updateRemoteIP);
-  Particle.subscribe("getRemotePort-SLIPPAGE", updateRemotePort);
+  Particle.subscribe("getRemoteIP-SLIPPAGE3", updateRemoteIP);
+  Particle.subscribe("getRemotePort-SLIPPAGE3", updateRemotePort);
   Serial.begin(115200);
   udp.begin(0);
-  lipo.begin();
-  lipo.quickStart();
-  lipo.setThreshold(20);
+  //lipo.begin();
+  //lipo.quickStart();
+  //lipo.setThreshold(20);
   // Before initializing the IMU, there are a few settings
   // we may need to adjust. Use the settings struct to set
   // the device's communication mode and addresses:
@@ -116,7 +117,7 @@ void loop()
   printGyro();  // Print "G: gx, gy, gz"
   printAccel(); // Print "A: ax, ay, az"
   printMag();   // Print "M: mx, my, mz"
-  printVoltage(); // Print "battery:"
+  //printVoltage(); // Print "battery:"
   // Print the heading and orientation for fun!
   // Call print attitude. The LSM9DS1's magnetometer x and y
   // axes are opposite to the accelerometer, so my and mx are
@@ -236,7 +237,7 @@ void printMag()
 #endif
 }
 
-void printVoltage()
+/*void printVoltage()
 {
   // lipo.getVoltage() returns a voltage value (e.g. 3.93)
 	voltage = lipo.getVoltage();
@@ -260,6 +261,7 @@ void printVoltage()
     udp.begin(0);
   }
 }
+*/
 
 // Calculate pitch, roll, and heading.
 // Pitch/roll calculations take from this app note:
