@@ -7,6 +7,7 @@ Sends LSM9DS1 IMU data over UDP. Requires SFE_LSM9DS1 library by Jim Lindblom
 https://github.com/sparkfun/SparkFun_LSM9DS1_Particle_Library
 
 *****************************************************************/
+SYSTEM_MODE(AUTOMATIC);
 #include "SparkFunLSM9DS1.h"
 #include "SparkFunMAX17043.h"
 #include "math.h"
@@ -27,7 +28,7 @@ UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 char IPString[40];
-IPAddress remoteIP(10,196,20,161);
+IPAddress remoteIP(10,188,255,207);
 
 //Battery Voltage
 double voltage = 0; // Variable to keep track of LiPo voltage
@@ -36,9 +37,9 @@ bool alert; // Variable to keep track of whether alert has been triggered
 
 
 // receive a new port from Particle cloud Terminal
-void updateRemotePort(const char *event, const char *data) {
+/*void updateRemotePort(const char *event, const char *data) {
   remotePort = atoi(data);
-  Particle.publish("remotePortCallback", remotePort);
+  //Particle.publish("remotePortCallback", remotePort);
 }
 
 //receive a new IP address from Particle cloud Terminal
@@ -56,14 +57,15 @@ void updateRemoteIP(const char *event, const char *data) {
   }
   sprintf(IPString, "%i, %i, %i, %i", IPHandler[0], IPHandler[1], IPHandler[2], IPHandler[3]);
   remoteIP = IPHandler;
-  Particle.publish("remoteIPCallback", IPString);
-  Particle.publish("remoteIPCallback", String(remoteIP));
-}
+  //Particle.publish("remoteIPCallback", IPString);
+  //Particle.publish("remoteIPCallback", String(remoteIP));
+}*/
 
 void setup()
 {
-  Particle.subscribe("getRemoteIP-SLIPPAGE", updateRemoteIP);
-  Particle.subscribe("getRemotePort-SLIPPAGE", updateRemotePort);
+  //Particle.subscribe("getRemoteIP-SLIPPAGE", updateRemoteIP);
+  //Particle.subscribe("getRemotePort-SLIPPAGE", updateRemotePort);
+  //Particle.disconnect();
   Serial.begin(115200);
   udp.begin(0);
   lipo.begin();
@@ -89,7 +91,7 @@ void setup()
     while (1)
       ;
   }
-  Particle.publish("slippage1-IP", String(WiFi.localIP())); //Publish IP via particle console
+  //Particle.publish("slippage1-IP", String(WiFi.localIP())); //Publish IP via particle console
 }
 
 void loop()
