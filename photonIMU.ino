@@ -7,6 +7,8 @@ Sends LSM9DS1 IMU data over UDP. Requires SFE_LSM9DS1 library by Jim Lindblom
 https://github.com/sparkfun/SparkFun_LSM9DS1_Particle_Library
 
 *****************************************************************/
+//SYSTEM_THREAD(ENABLED);
+
 #include "SparkFunLSM9DS1.h"
 #include "SparkFunMAX17043.h"
 #include "math.h"
@@ -27,7 +29,7 @@ UDP udp;
 const size_t bufferSize = 32; // Make this bigger if you have more data!
 char buffer[bufferSize];
 char IPString[40];
-IPAddress remoteIP(10,196,20,161);
+IPAddress remoteIP(10,188,255,63);
 
 //Battery Voltage
 double voltage = 0; // Variable to keep track of LiPo voltage
@@ -62,8 +64,8 @@ void updateRemoteIP(const char *event, const char *data) {
 
 void setup()
 {
-  Particle.subscribe("getRemoteIP-SLIPPAGE", updateRemoteIP);
-  Particle.subscribe("getRemotePort-SLIPPAGE", updateRemotePort);
+  Particle.subscribe("getRemoteIP-SLIPPAGE4", updateRemoteIP);
+  Particle.subscribe("getRemotePort-SLIPPAGE4", updateRemotePort);
   Serial.begin(115200);
   udp.begin(0);
   lipo.begin();
@@ -78,7 +80,7 @@ void setup()
   // The above lines will only take effect AFTER calling
   // imu.begin(), which verifies communication with the IMU
   // and turns it on.
-  if (!imu.begin())
+  /*if (!imu.begin()) // IF THE IMU IS BROKEN, THIS LOOP WILL INTERFERE WITH PARTICLE CLOUD
   {
     Serial.println("Failed to communicate with LSM9DS1.");
     Serial.println("Double-check wiring.");
@@ -86,9 +88,9 @@ void setup()
                   "work for an out of the box LSM9DS1 " \
                   "Breakout, but may need to be modified " \
                   "if the board jumpers are.");
-    while (1)
+    while (1) // IF THE IMU IS BROKEN, THIS LOOP WILL INTERFERE WITH PARTICLE CLOUD
       ;
-  }
+  }*/
   Particle.publish("slippage1-IP", String(WiFi.localIP())); //Publish IP via particle console
 }
 
