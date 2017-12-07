@@ -43,9 +43,9 @@
 					"numinlets" : 5,
 					"numoutlets" : 4,
 					"outlettype" : [ "signal", "signal", "", "" ],
-					"patching_rect" : [ 144.0, 189.0, 131.0, 22.0 ],
+					"patching_rect" : [ 144.0, 189.0, 138.0, 22.0 ],
 					"style" : "",
-					"text" : "adsr~ 10. 10. 0.5 1000"
+					"text" : "adsr~ 100. 10. 0.5 1000"
 				}
 
 			}

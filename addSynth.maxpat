@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 120.0, 79.0, 1286.0, 589.0 ],
+		"rect" : [ 262.0, 219.0, 1286.0, 589.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -37,19 +37,6 @@
 		"style" : "",
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
-				"box" : 				{
-					"id" : "obj-42",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "int" ],
-					"patching_rect" : [ 1024.5, 30.0, 109.0, 22.0 ],
-					"style" : "",
-					"text" : "sadam.udpSender"
-				}
-
-			}
-, 			{
 				"box" : 				{
 					"id" : "obj-41",
 					"maxclass" : "message",
@@ -1633,10 +1620,6 @@
 
 			}
  ],
-		"parameters" : 		{
-
-		}
-,
 		"dependency_cache" : [ 			{
 				"name" : "photonUDP.maxpat",
 				"bootpath" : "~/Projects/slippageIMU-wearable",
@@ -1660,10 +1643,6 @@
 			}
 , 			{
 				"name" : "sadam.udpReceiver.mxo",
-				"type" : "iLaX"
-			}
-, 			{
-				"name" : "sadam.udpSender.mxo",
 				"type" : "iLaX"
 			}
  ],
