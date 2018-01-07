@@ -25,7 +25,7 @@ UDP udp;
 const size_t bufferSize = 128; // Make this bigger if you have more data!
 char buffer[bufferSize];
 char IPString[40];
-IPAddress remoteIP(192,168,0,7);
+IPAddress remoteIP(10,197,108,105);
 
 // receive a new port from Particle cloud Terminal
 void updateRemotePort(const char *event, const char *data) {
@@ -53,8 +53,8 @@ void updateRemoteIP(const char *event, const char *data) {
 }
 
 void setup(){
-  Particle.subscribe("getRemoteIP-SLIPPAGE5", updateRemoteIP);
-  Particle.subscribe("getRemotePort-SLIPPAGE5", updateRemotePort);
+  Particle.subscribe("getRemoteIP-SLIPPAGE3", updateRemoteIP);
+  Particle.subscribe("getRemotePort-SLIPPAGE3", updateRemotePort);
   Serial.begin(115200);
   udp.begin(0);
   imu.settings.device.commInterface = IMU_MODE_I2C;
