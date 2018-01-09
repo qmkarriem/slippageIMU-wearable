@@ -30,7 +30,6 @@
 /* Assign a unique base ID for this sensor */   
 Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);  // Use I2C, ID #1000
 
-
 /* Or, use Hardware SPI:
   SCK -> SPI CLK
   SDA -> SPI MOSI
@@ -145,6 +144,7 @@ void setup(void)
 #ifndef ESP8266
   while (!Serial);     // will pause Zero, Leonardo, etc until serial console opens
 #endif
+  Serial1.begin(9600);
   Serial.begin(9600);
   Serial.println(F("LSM9DS0 9DOF Sensor Test")); Serial.println("");
   
@@ -181,19 +181,41 @@ void loop(void)
   lsm.getEvent(&accel, &mag, &gyro, &temp); 
   
   // print out gyroscopic data
+  Serial1.print("G: "); Serial1.print(gyro.gyro.x); Serial1.print(" ");
+  Serial1.print(gyro.gyro.y); Serial1.print(" ");
+  Serial1.print(gyro.gyro.z); Serial1.println(" ");
+
   Serial.print("G: "); Serial.print(gyro.gyro.x); Serial.print(" ");
   Serial.print(gyro.gyro.y); Serial.print(" ");
   Serial.print(gyro.gyro.z); Serial.println(" ");
   
   // print out accelleration data
+  Serial1.print("A: "); Serial1.print(accel.acceleration.x); Serial1.print(" ");
+  Serial1.print(accel.acceleration.y); Serial1.print(" ");
+  Serial1.print(accel.acceleration.z); Serial1.println(" ");
+
   Serial.print("A: "); Serial.print(accel.acceleration.x); Serial.print(" ");
   Serial.print(accel.acceleration.y); Serial.print(" ");
   Serial.print(accel.acceleration.z); Serial.println(" ");
 
   // print out magnetometer data
+  Serial1.print("M: "); Serial1.print(mag.magnetic.x); Serial1.print(" ");
+  Serial1.print(mag.magnetic.y); Serial1.print(" ");
+  Serial1.print(mag.magnetic.z); Serial1.println(" ");
+
   Serial.print("M: "); Serial.print(mag.magnetic.x); Serial.print(" ");
   Serial.print(mag.magnetic.y); Serial.print(" ");
   Serial.print(mag.magnetic.z); Serial.println(" ");
 
-  delay(250);
+  if (Serial.available()) //USB
+  { // If data comes in from serial monitor, send it out to XBee
+  Serial1.write(Serial.read()); //XBee/UART1/pins 0 and 1
+
+  }
+  if (Serial1.available())   //XBee/UART1/pins 0 and 1
+  { // If data comes in from XBee, send it out to serial monitor
+    Serial.write(Serial1.read());  //Serial port
+  }
+  
+  delay(50);
 }

@@ -98,7 +98,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 23.0, 24.0, 30.0, 30.0 ],
+					"patching_rect" : [ 99.0, 24.0, 30.0, 30.0 ],
 					"style" : ""
 				}
 
@@ -113,31 +113,6 @@
 					"patching_rect" : [ 40.0, 397.0, 85.0, 22.0 ],
 					"style" : "",
 					"text" : "route G: A: M:"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-62",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 252.5, 76.0, 54.0, 22.0 ],
-					"style" : "",
-					"text" : "getbaud"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-41",
-					"maxclass" : "button",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 216.0, 68.0, 24.0, 24.0 ],
-					"style" : ""
 				}
 
 			}
@@ -198,7 +173,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 83.0, 40.0, 157.0, 20.0 ],
+					"patching_rect" : [ 181.0, 68.0, 157.0, 20.0 ],
 					"style" : "",
 					"text" : "< start polling the serial port"
 				}
@@ -237,9 +212,9 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 23.0, 68.0, 65.0, 22.0 ],
+					"patching_rect" : [ 99.0, 68.0, 58.0, 22.0 ],
 					"style" : "",
-					"text" : "metro 250"
+					"text" : "metro 50"
 				}
 
 			}
@@ -258,50 +233,14 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-3",
-					"maxclass" : "number",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 147.0, 68.0, 50.0, 22.0 ],
-					"style" : "numberGold-1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"bgcolor" : [ 0.454902, 0.462745, 0.482353, 1.0 ],
-					"bgcolor2" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
-					"bgfillcolor_angle" : 270.0,
-					"bgfillcolor_autogradient" : 0.0,
-					"bgfillcolor_color" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
-					"bgfillcolor_color1" : [ 0.454902, 0.462745, 0.482353, 1.0 ],
-					"bgfillcolor_color2" : [ 0.290196, 0.309804, 0.301961, 1.0 ],
-					"bgfillcolor_proportion" : 0.39,
-					"bgfillcolor_type" : "gradient",
-					"gradient" : 1,
-					"id" : "obj-2",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 99.0, 68.0, 33.0, 22.0 ],
-					"style" : "",
-					"text" : "print"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "" ],
-					"patching_rect" : [ 99.0, 102.0, 80.0, 22.0 ],
+					"patching_rect" : [ 99.0, 102.0, 92.0, 22.0 ],
 					"style" : "newobjYellow-1",
-					"text" : "serial b 9600"
+					"text" : "serial b 115200"
 				}
 
 			}
@@ -336,22 +275,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-2", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-4", 0 ],
 					"source" : [ "obj-23", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-3", 0 ]
 				}
 
 			}
@@ -380,21 +305,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-41", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-5", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-1", 0 ],
-					"source" : [ "obj-62", 0 ]
 				}
 
 			}
