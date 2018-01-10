@@ -16,7 +16,7 @@ LSM9DS1 imu;
 #define LSM9DS1_AG	0x6B // Would be 0x6A if SDO_AG is LOW
 
 #define PRINT_CALCULATED
-#define PRINT_SPEED 50 // 50 ms between prints (experienced occasional dropouts at 25 ms)
+#define PRINT_SPEED 100 // 50 ms between prints (experienced occasional dropouts at 25 ms)
 #define DECLINATION -9.1 // Declination (degrees) in Durham, NC, October 2017. Calculated via http://www.ngdc.noaa.gov/geomag-web/#declination
 
 unsigned int localPort = 8888;
@@ -25,7 +25,7 @@ UDP udp;
 const size_t bufferSize = 128; // Make this bigger if you have more data!
 char buffer[bufferSize];
 char IPString[40];
-IPAddress remoteIP(10,197,108,105);
+IPAddress remoteIP(192,168,0,10);
 
 // receive a new port from Particle cloud Terminal
 void updateRemotePort(const char *event, const char *data) {
@@ -53,8 +53,8 @@ void updateRemoteIP(const char *event, const char *data) {
 }
 
 void setup(){
-  Particle.subscribe("getRemoteIP-SLIPPAGE3", updateRemoteIP);
-  Particle.subscribe("getRemotePort-SLIPPAGE3", updateRemotePort);
+  Particle.subscribe("getRemoteIP-SLIPPAGE5", updateRemoteIP);
+  Particle.subscribe("getRemotePort-SLIPPAGE5", updateRemotePort);
   Serial.begin(115200);
   udp.begin(0);
   imu.settings.device.commInterface = IMU_MODE_I2C;
