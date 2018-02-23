@@ -37,8 +37,8 @@ Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);  // Use I2C, ID #1000
   then select any two pins for the two CS lines:
 */
 
-#define LSM9DS0_XM_CS 10
-#define LSM9DS0_GYRO_CS 9
+#define LSM9DS0_XM_CS 2
+#define LSM9DS0_GYRO_CS 3
 //Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(LSM9DS0_XM_CS, LSM9DS0_GYRO_CS, 1000);
 
 /* Or, use Software SPI:
@@ -167,12 +167,6 @@ void setup(void)
   Serial.println("");
 }
 
-/**************************************************************************/
-/*
-    Arduino loop function, called once 'setup' is complete (your own code
-    should go here)
-*/
-/**************************************************************************/
 void loop(void) 
 {  
   /* Get a new sensor event */ 
