@@ -38,6 +38,19 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-37",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 41.0, 447.0, 29.5, 22.0 ],
+					"style" : "",
+					"text" : "55"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-45",
 					"maxclass" : "toggle",
 					"numinlets" : 1,
@@ -1501,6 +1514,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-85", 0 ],
+					"source" : [ "obj-37", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-8", 0 ],
 					"source" : [ "obj-38", 0 ]
 				}
@@ -2001,21 +2021,21 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "photonUDP.maxpat",
-				"bootpath" : "~/Projects/slippageIMU-wearable",
+				"bootpath" : "~/Documents/GitHub/slippageIMU-wearable",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "addVoice.maxpat",
-				"bootpath" : "~/Projects/slippageIMU-wearable",
+				"bootpath" : "~/Documents/GitHub/slippageIMU-wearable",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "noteTrigger.maxpat",
-				"bootpath" : "~/Projects/slippageIMU-wearable",
+				"bootpath" : "~/Documents/GitHub/slippageIMU-wearable",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
