@@ -4,12 +4,12 @@
 		"appversion" : 		{
 			"major" : 7,
 			"minor" : 3,
-			"revision" : 4,
-			"architecture" : "x86",
+			"revision" : 6,
+			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 236.0, 295.0, 902.0, 681.0 ],
+		"rect" : [ 237.0, 294.0, 902.0, 681.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -912,8 +912,16 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-64", 0 ],
+					"destination" : [ "obj-38", 0 ],
 					"order" : 2,
+					"source" : [ "obj-66", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-64", 0 ],
+					"order" : 3,
 					"source" : [ "obj-66", 0 ]
 				}
 
@@ -963,14 +971,14 @@
  ],
 		"dependency_cache" : [ 			{
 				"name" : "photonUDP.maxpat",
-				"bootpath" : "~/Projects/slippageIMU-wearable",
+				"bootpath" : "~/Documents/GitHub/slippageIMU-wearable",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "noteTrigger.maxpat",
-				"bootpath" : "~/Projects/slippageIMU-wearable",
+				"bootpath" : "~/Documents/GitHub/slippageIMU-wearable",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
